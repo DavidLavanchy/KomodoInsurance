@@ -41,7 +41,6 @@ namespace KomodoInsurance_POCOs
             }
         }
 
-
         public bool RemoveDevTeamFromList(int identificationNumber)
         {
             Developers developer = GetDeveloperByIdentificationNumber(identificationNumber);

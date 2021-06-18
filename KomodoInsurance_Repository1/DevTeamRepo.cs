@@ -35,6 +35,7 @@ namespace KomodoInsurance_Repository1
 
             if (oldDevTeams != null)
             {
+
                 oldDevTeams.Developer = newDevTeam.Developer;
                 oldDevTeams.TeamName = newDevTeam.TeamName;
                 oldDevTeams.TeamIdentificationNumber = newDevTeam.TeamIdentificationNumber;
@@ -84,7 +85,6 @@ namespace KomodoInsurance_Repository1
         }
 
 
-       
         //Helper Method
         public DevTeams GetDevTeamByIdentificationNumber(int teamIdentificationNumber)
         {

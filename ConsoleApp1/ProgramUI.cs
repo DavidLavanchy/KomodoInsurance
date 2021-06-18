@@ -159,12 +159,17 @@ namespace ConsoleApp1
 
             DevTeams devTeam = _devTeamsRepo.GetDevTeamByIdentificationNumber(input);
 
-            foreach (Developers developer in devTeam.Developer)
+            if (devTeam.Developer != null)
             {
-                Console.WriteLine($"{developer.FirstName} {developer.LastName}\n" +
-                   $"Developer ID: {developer.IdentificationNumber}\n" +
-                   $"Access to Pluarlsight:{developer.HasAcessToPluralsight}\n");
+                foreach (Developers developer in devTeam.Developer)
+                {
+
+                    Console.WriteLine($"{developer.FirstName} {developer.LastName}\n" +
+                       $"Developer ID: {developer.IdentificationNumber}\n" +
+                       $"Access to Pluarlsight:{developer.HasAcessToPluralsight}\n");
+                }
             }
+            
         }
 
         private void DeleteADeveloper()
@@ -205,12 +210,7 @@ namespace ConsoleApp1
 
         private void AddDeveloperToExistingDevTeam()
         {
-
-            ViewAllDevelopers();
-            bool isTrue = true;
-
-            while (isTrue)
-            {
+                ViewAllDevelopers();
                 Console.WriteLine("Enter the Identification Number of the developer you would like to add to an existing DevTeam:");
                 int developerID = Convert.ToInt32(Console.ReadLine());
                 ViewAllDevTeams();
@@ -218,22 +218,11 @@ namespace ConsoleApp1
                 int devTeamID = Convert.ToInt32(Console.ReadLine());
 
                 Developers developer = _developerRepo.GetDeveloperByIdentificationNumber(developerID);
-                DevTeams devTeam = _devTeamsRepo.GetDevTeamByIdentificationNumber(devTeamID);
-                devTeam.Developer.Add(developer);
-                _devTeamsRepo.UpdateExistingDevelopersOnDevTeamsList(devTeamID, devTeam);
+                DevTeams devTitle = _devTeamsRepo.GetDevTeamByIdentificationNumber(devTeamID);
+                string title = devTitle.TeamName; 
+                DevTeams newDevTeams2 = new DevTeams(new List<Developers> { developer }, title , devTeamID);
 
-                Console.WriteLine("Would you like to add another developer to a DevTeam? (y/n)");
-                string input = Console.ReadLine().ToLower();
-
-                if(input == "n")
-                {
-                   isTrue = false;
-                }
-                else
-                {
-                    isTrue = true;
-                }
-            }
+            _devTeamsRepo.UpdateExistingDevelopersOnDevTeamsList(devTeamID, newDevTeams2);
 
         }
         private void DeleteDeveloper()
@@ -299,12 +288,12 @@ namespace ConsoleApp1
                 Console.WriteLine($"{devTeams.TeamName}\n" +
                     $"Team ID:{devTeams.TeamIdentificationNumber}\n");
 
-                foreach (Developers developer in devTeams.Developer)
-                {
-                    Console.WriteLine($"{developer.FirstName} {developer.LastName}\n" +
-                       $"Developer ID: {developer.IdentificationNumber}\n" +
-                       $"Access to Pluarlsight:{developer.HasAcessToPluralsight}\n");
-                 }
+                //foreach (Developers developer in devTeams.Developer)
+                //{
+                //    Console.WriteLine($"{developer.FirstName} {developer.LastName}\n" +
+                //       $"Developer ID: {developer.IdentificationNumber}\n" +
+                //       $"Access to Pluarlsight:{developer.HasAcessToPluralsight}\n");
+                // }
 
             }
 
