@@ -112,14 +112,17 @@ namespace ConsoleApp1
             Console.Clear();
             ViewAllDevTeams();
 
-            DevTeams newDevTeams = new DevTeams();
-
 
             Console.WriteLine("Enter a team name for this new DevTeam");
-            newDevTeams.TeamName = Console.ReadLine();
+            string teamName = Console.ReadLine();
             Console.WriteLine("Enter the identification number for this new DevTeam");
-            newDevTeams.TeamIdentificationNumber = Convert.ToInt32(Console.ReadLine());
+            int teamIdentificationNumber = Convert.ToInt32(Console.ReadLine());
+            ViewAllDevelopers();
+            Console.WriteLine("Enter the ID of the developer you would like to add to the new team");
+            int input = Convert.ToInt32(Console.ReadLine());
+            Developers developer = _developerRepo.GetDeveloperByIdentificationNumber(input);
 
+            DevTeams newDevTeams = new DevTeams(new List<Developers> { developer }, teamName, teamIdentificationNumber);
             _devTeamsRepo.AddDevelopertoDevTeamToList(newDevTeams);
 
         }
@@ -210,6 +213,9 @@ namespace ConsoleApp1
 
         private void AddDeveloperToExistingDevTeam()
         {
+            bool isTrue = true;
+            while (isTrue)
+            {
                 ViewAllDevelopers();
                 Console.WriteLine("Enter the Identification Number of the developer you would like to add to an existing DevTeam:");
                 int developerID = Convert.ToInt32(Console.ReadLine());
@@ -218,12 +224,33 @@ namespace ConsoleApp1
                 int devTeamID = Convert.ToInt32(Console.ReadLine());
 
                 Developers developer = _developerRepo.GetDeveloperByIdentificationNumber(developerID);
-                DevTeams devTitle = _devTeamsRepo.GetDevTeamByIdentificationNumber(devTeamID);
-                string title = devTitle.TeamName; 
-                DevTeams newDevTeams2 = new DevTeams(new List<Developers> { developer }, title , devTeamID);
+                
+               bool wasAdded = _devTeamsRepo.UpdateExistingDevelopersOnDevTeamsList(devTeamID, developer);
+                if(wasAdded == true)
+                {
+                    Console.WriteLine("Developer was successfully added.");
+                }
+                else
+                {
+                    Console.WriteLine("Developer could not be successfully added.");
+                }
 
-            _devTeamsRepo.UpdateExistingDevelopersOnDevTeamsList(devTeamID, newDevTeams2);
+                Console.WriteLine("Would you like to add another developer to another DevTeam? (y/n)");
+                string input = Console.ReadLine().Trim().ToLower();
 
+                if (input == "n")
+                {
+                    isTrue = false;
+                }
+                else if (input == "y")
+                {
+                    isTrue = true;
+                }
+                else
+                {
+                    isTrue = false;
+                }
+            }
         }
         private void DeleteDeveloper()
         {

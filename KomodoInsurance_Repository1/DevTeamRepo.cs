@@ -29,25 +29,23 @@ namespace KomodoInsurance_Repository1
 
 
         //Update
-        public bool UpdateExistingDevelopersOnDevTeamsList(int originalTeamIdentificationNumber, DevTeams newDevTeam)
+        public bool UpdateExistingDevelopersOnDevTeamsList(int originalTeamIdentificationNumber, Developers developer)
         {
             DevTeams oldDevTeams = GetDevTeamByIdentificationNumber(originalTeamIdentificationNumber);
 
-            if (oldDevTeams != null)
+            if(oldDevTeams != null)
             {
-
-                oldDevTeams.Developer = newDevTeam.Developer;
-                oldDevTeams.TeamName = newDevTeam.TeamName;
-                oldDevTeams.TeamIdentificationNumber = newDevTeam.TeamIdentificationNumber;
+                oldDevTeams.Developer.Add(developer);
                 return true;
             }
             else
             {
                 return false;
             }
+
+
+
         }
-
-
         //Delete
         public bool RemoveDeveloperFromDevTeamsList(int teamIdentificationNumber)
         {
